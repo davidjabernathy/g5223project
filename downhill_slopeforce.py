@@ -22,7 +22,7 @@ and not Newtons of force.
 
 TopHill_elevation = 552 #feet
 bottomHill_elevation = 10 #feet
-HillHeight = TopHill_elevation - bottomHill_elevaion
+HillHeight = TopHill_elevation - bottomHill_elevation
 
 
 
@@ -33,7 +33,7 @@ street_length = 1.5 #miles
 skateweight = 130.86
 gravity = 9.8 #m/s^2
 
-def skate_downhill_accel(street_length, skateweight, elevation, gravity):
+def skate_downhill_accel(street_length, skateweight, HillHeight, gravity):
 
     #finding acceleration of skater
     hillangle = math.sin(elevation/street_length)
@@ -49,10 +49,9 @@ def skate_downhill_accel(street_length, skateweight, elevation, gravity):
     airfrict = .02
     #Newtons of force
     slope_force = skateweight * hillangle * (9.81 - airfrict)
+    print(skate_velocity, "Meters per second")
     
     return(slope_force, hillangle, skate_velocity)
 
 
-skate_downhill_accel(street_length, skateweight, HillHeight, gravity)
-
-
+skate_downhill_accel(street_length, skateweight, elevation, gravity)
