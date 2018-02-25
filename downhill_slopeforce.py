@@ -35,7 +35,8 @@ def skate_downhill_accel(street_length, skateweight, elevation, gravity):
 
     skate_velocity = street_length / skateTime
     
+    #secondary method that brings in Friction
     airfrict = .02
     slope_force = skateweight * hillangle * (9.81 - airfrict)
     
-    return(slope_force, hillangle)
+    return(slope_force, hillangle, skate_velocity)
