@@ -36,7 +36,7 @@ gravity = 9.8 #m/s^2
 def skate_downhill_accel(street_length, skateweight, elevation, gravity):
 
     #finding acceleration of skater
-    hillangle = sin(elevation/street_length)
+    hillangle = math.sin(elevation/street_length)
     acceleration = gravity * hillangle
 
     #Time it will take to make it to the bottom
