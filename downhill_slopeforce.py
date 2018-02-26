@@ -34,7 +34,10 @@ skateweight = 130.86
 gravity = 9.8 #m/s^2
 
 def skate_downhill_accel(street_length, skateweight, HillHeight, gravity):
-
+   
+    # conversion from meters to miles
+    length_meters = street_length/1609.344
+   
     #finding acceleration of skater
     hillangle = math.sin(elevation/street_length)
     acceleration = gravity * hillangle
