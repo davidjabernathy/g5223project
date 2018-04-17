@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+	<title>GeoJSON tutorial - Leaflet</title>
+
+	<meta charset="utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+	<link rel="shortcut icon" type="image/x-icon" href="docs/images/favicon.ico" />
+
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.3.1/dist/leaflet.css" integrity="sha512-Rksm5RenBEKSKFjgI3a41vrjkw4EVPlJ3+OiI65vTjIdo9brlAacEuKOiQ5OFh7cOI1bkDwLqdLw3Zg0cRJAAQ==" crossorigin=""/>
+  <script src="https://unpkg.com/leaflet@1.3.1/dist/leaflet.js" integrity="sha512-/Nsx9X4HebavoBvEBuyp3I7od5tA0UzAxs+j83KgC8PU0kgB4XiK4Lfe4y4cgBtaRJQEIFCW+oC506aPT2L1zw==" crossorigin=""></script>
+  <script src="filteredEdges.js"></script>
+  <script src="columbus.js"></script>
+
+
+	<script src="http://rawgit.com/Leaflet/Leaflet.draw/develop/src/Leaflet.draw.js"></script>
+	<script src="http://rawgit.com/Leaflet/Leaflet.draw/develop/src/Leaflet.Draw.Event.js"></script>
+	<link rel="stylesheet" href="http://rawgit.com/Leaflet/Leaflet.draw/develop/src/leaflet.draw.css"/>
+
+
+	<script type="text/javascript">
+
+	</script>
+
+	<script
+			 src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD65f4ivv0_b8Rhq7GMN-oaFx12MtpN1No">
+	</script>
+
+	<style>
+		html, body {
+			height: 100%;
+			margin: 0;
+		}
+		#map {
+			height: 100%;
+      width: 80%;
+			position: left;
+			left: 20%;
+			top: 0;
+		  position: fixed; /* Fixed Sidebar (stay in place on scroll) */
+		}
+
+		/* The sidebar menu */
+		.sideInfo {
+		    height: 100%; /* Full-height: remove this if you want "auto" height */
+		    width: 20%; /* Set the width of the sidebar */
+		    position: fixed; /* Fixed Sidebar (stay in place on scroll) */
+		    z-index: 1; /* Stay on top */
+		    top: 0; /* Stay at the top */
+		    left: 0;
+		    background-color: #ffffff; /* Black */
+		    overflow-x: hidden; /* Disable horizontal scroll */
+		    padding-top: 20px;
+		}
+
+		#page {
+			height: 100%;
+			width: 100%
+		}
+
+		#street-view {
+			width: 20%;
+			height: 20%;
+		}
+
+	</style>
+
+
+</head>
+<body>
+<div id="page">
+<div id="street-view" class="sideInfo"></div>
+<div id='map'></div>
+</div>
+
+
+
+<script>
+
+
+</script>
+<script>
+	var panorama;
+	var panView = function (lat, lng) {
+	panorama = new google.maps.StreetViewPanorama(
+			document.getElementById('street-view'),
+			{
+				position: {lat: lat, lng: lng},
+				pov: {heading: 165, pitch: 0},
+				zoom: 1
+			});
+	}
+	var map = L.map('map', {drawControl: true}).setView([39.9612, -82.9988], 11.5);
+	map.createPane('labels');
+	map.getPane('labels').style.zIndex = 650;
+	//map.getPane('labels').style.pointerEvents = 'none';
+//mapbox://styles/djabernathy/cjfg16tx66kvz2slg5i4sfd8a
+
+
+  var edges = {"type": "LineString", "coordinates": [[40.1200793, -83.0364405], [40.120086, -83.036841], [40.120059, -83.037353], [40.120042, -83.037529], [40.120028, -83.038165], [40.120031, -83.038371]]};
+  var edge1 = {"type": "LineString", "coordinates": [[-83.0364405, 40.1200793], [-83.036841, 40.120086], [-83.037353, 40.120059], [-83.037529, 40.120042], [-83.038165, 40.120028], [-83.038371, 40.120031]]};
+
+  var redStyle = {
+      "color": "#dbdde0",
+      "weight": 1,
+      "opacity": .6
+  };
+
+  var blueStyle = {
+      "color": "#FFA500",
+      "weight": 1,
+      "opacity": .8
+  };
+
+  console.log(filteredEdges)
+  L.geoJSON(columbus, {style: redStyle}).addTo(map)
+  L.geoJSON(filteredEdges, {style: blueStyle}).addTo(map)
+
+	L.tileLayer('https://api.mapbox.com/styles/v1/djabernathy/cjfg26r241fxm2sp2jzcsor80/tiles/256/{z}/{x}/{y}@2x?access_token=pk.eyJ1IjoiZGphYmVybmF0aHkiLCJhIjoiY2pmZzE2NGw2MjJkdjMzbWkxMnRqMnh5NCJ9.MuXblUUZsFV0ibyEQz2AJw', {
+		maxZoom: 13,
+	}).addTo(map);
+
+	var labelLink = 'https://api.mapbox.com/styles/v1/djabernathy/cjfg3ah4jc5ej2rpaby3hlah1/tiles/256/{z}/{x}/{y}@2x?access_token=pk.eyJ1IjoiZGphYmVybmF0aHkiLCJhIjoiY2pmZzE2NGw2MjJkdjMzbWkxMnRqMnh5NCJ9.MuXblUUZsFV0ibyEQz2AJw';
+	L.tileLayer(labelLink, {
+			maxZoom: 13,
+			pane: 'labels'
+		}).addTo(map);
+
+
+
+		var circle = L.circle([39.9612, -82.9988], {
+				color: '#f03',
+				opacity: 0,
+				fillColor: '#0066ff',
+				fillOpacity: 0.4,
+				radius: 1000.0
+		});
+		circle.addTo(map);
+
+
+
+		var latMin = 0;
+		var latMax = 0;
+		var lonMin = 0;
+		var lonMax = 0;
+		var selectedRoads = new Set();
+		(function() {
+		    document.onmousemove = handleMouseMove;
+		    function handleMouseMove(event) {
+		        var dot, eventDoc, doc, body, pageX, pageY;
+
+		        event = event || window.event; // IE-ism
+
+		        // If pageX/Y aren't available and clientX/Y are,
+		        // calculate pageX/Y - logic taken from jQuery.
+		        // (This is to support old IE)
+		        if (event.pageX == null && event.clientX != null) {
+		            eventDoc = (event.target && event.target.ownerDocument) || document;
+		            doc = eventDoc.documentElement;
+		            body = eventDoc.body;
+
+		            event.pageX = event.clientX +
+		              (doc && doc.scrollLeft || body && body.scrollLeft || 0) -
+		              (doc && doc.clientLeft || body && body.clientLeft || 0);
+		            event.pageY = event.clientY +
+		              (doc && doc.scrollTop  || body && body.scrollTop  || 0) -
+		              (doc && doc.clientTop  || body && body.clientTop  || 0 );
+		        }
+
+		        // Use event.pageX / event.pageY here
+						//console.log(event.pageX, event.pageY)
+
+						// offset should be relative. based on the screen height and width
+						var point = L.point(event.pageX - 350, event.pageY - 40);
+						coord = map.layerPointToLatLng(point);
+						circle.setLatLng(coord);
+						bounds = circle.getBounds();
+						latMin = Math.abs(bounds.getSouth());
+						latMax = Math.abs(bounds.getNorth());
+						lonMin = Math.abs(bounds.getEast());
+						lonMax = Math.abs(bounds.getWest());
+						//console.log(lonMin, lonMax);
+
+						features = filteredEdges.features
+						//console.log(features[4].geometry.coordinates.length)
+
+						document.querySelector("#map").addEventListener("click", function() {
+							//panView()
+							selectedRoads.clear();
+							document.querySelector(".sideInfo").textContent = " ";
+							for(var i = 0; i < features.length; i++) {
+								var coords = features[i].geometry.coordinates
+								for(var j = 0; j < coords.length; j++) {
+									var lat  = Math.abs(coords[j][1]);
+									var lon = Math.abs(coords[j][0]);
+									if(lat > latMin && lat < latMax && lon > lonMin && lon < lonMax) {
+										var name = features[i].properties.name
+										if(typeof(name) != "string") {
+											for(var k = 0; k < name.length; k++) {
+												selectedRoads.add(name[k])
+											}
+										} else {
+											selectedRoads.add(name);
+										}
+										//selectedRoads.add(name);
+									}
+								}
+								//document.querySelector(".sideInfo").innerHTML += name + "<br>";
+
+								//panView(37.869260, -122.254811)
+							}
+
+							selectedRoads.forEach(function(value, key, setObj) {
+								document.querySelector(".sideInfo").innerHTML += value + "<br>";
+								//document.querySelector("#sideInfo").innerHTML = '<iframe src="https://maps.googleapis.com/maps/api/streetview?size=600x300&location=46.414382,10.013988&heading=151.78&pitch=-0.76&key=AIzaSyD65f4ivv0_b8Rhq7GMN-oaFx12MtpN1No"></iframe>'
+
+
+
+							})
+							//panView(37.869260, -122.254811)
+
+							//document.querySelector("#sideInfo").textContent = name;
+							//https://www.google.com/maps/embed/v1/place?key=AIzaSyAgGQRYnWTzsgf6Xn1DISE99Tdq7Lr9rwU&q=Eiffel+Tower,Paris+France
+						})
+
+
+		    }
+		})();
+
+
+
+
+
+  //var filteredEdges = new L.GeoJSON.AJAX("/Users/djabernathy/Desktop/Geog5223/g5223project/edge.geojson").addTo(map);
+  //filteredEdges.addTo(map)
+
+
+</script>
+
+
+
+</body>
+</html>
