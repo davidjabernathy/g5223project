@@ -33,49 +33,54 @@
 		}
 		#map {
 			height: 100%;
-      width: 80%;
+      width: 100%;
 			position: left;
-			left: 20%;
+			left: 0%;
 			top: 0;
 		  position: fixed; /* Fixed Sidebar (stay in place on scroll) */
 		}
 		/* The sidebar menu */
 		.sideInfo {
-		    height: 100%; /* Full-height: remove this if you want "auto" height */
+		    height: 80%; /* Full-height: remove this if you want "auto" height */
 		    width: 20%; /* Set the width of the sidebar */
 		    position: fixed; /* Fixed Sidebar (stay in place on scroll) */
 		    z-index: 1; /* Stay on top */
-		    top: 0; /* Stay at the top */
-		    left: 0;
-		    background-color: #ffffff; /* Black */
+		    top: 10%; /* Stay at the top */
+		    left: 1%;
+		    background-color: lightgrey; /* Black */
 		    overflow-x: hidden; /* Disable horizontal scroll */
-		    padding-top: 20px;
+				border-radius: 15px;
+				position: fixed;
 		}
 		#sideText {
-				height: 70%; /* Full-height: remove this if you want "auto" height */
+				height: 50%; /* Full-height: remove this if you want "auto" height */
 				width: 20%; /* Set the width of the sidebar */
 				position: fixed; /* Fixed Sidebar (stay in place on scroll) */
 				z-index: 1; /* Stay on top */
-				top: 0; /* Stay at the top */
-				left: 0;
-				background-color: #ffffff; /* Black */
+				left: 1%;
+				background-color: lightgrey; /* Black */
 				overflow-x: hidden; /* Disable horizontal scroll */
-				padding-top: 20px;
+
 		}
 		#page {
 			height: 100%;
 			width: 100%
 		}
 		#street-view {
-			height: 30%;
-			top: 70%;
+			height: 40%;
+			top: 60%;
 			position: fixed;
+			background-color: lightgrey;
 		}
 		.button {
 	    text-align: center;
 	    cursor: pointer;
 		}
 		p {
+			text-align: center;
+		}
+
+		h2 {
 			text-align: center;
 		}
 	</style>
@@ -85,7 +90,10 @@
 <body>
 <div id="page">
 <div class="sideInfo">
-	<div id="sideText"></div>
+	<div id="sideText"><p>
+		<h2>Selected Streets</h2></p>
+		<span id="streetText"></span>
+	</div>
 	<div id="street-view"></div>
 </div>
 <div id='map'></div>
@@ -96,6 +104,7 @@
 <script>
 </script>
 <script>
+
 
 	function calcHypotenuse(a, b) {
 	  return(Math.sqrt((a * a) + (b * b)));
@@ -111,8 +120,10 @@
 	var selectedRoads = new Set();
 	var roadLengths = {};
 	var roadCoords = {};
+	var roadNames = {}
+	var roadsNamesSet = new Set();
 
-	var panorama;
+
 	var panView = function (lat, lng) {
 	panorama = new google.maps.StreetViewPanorama(
 			document.getElementById('street-view'),
@@ -122,6 +133,22 @@
 				zoom: 1
 			});
 	}
+
+
+	function geocodeLatLng(geocoder, coords) {
+		var latlng = {lat: coords[1], lng: coords[0]};
+		//console.log(latlng)
+		geocoder.geocode({'location': latlng}, function(results, status) {
+			if (status === 'OK') {
+				//console.log(results)
+				if (results[0]) {
+					result = results[0].address_components[1].long_name;
+				}
+			}
+		});
+		return result
+	}
+
 	var map = L.map('map', {drawControl: true}).setView([39.9612, -82.9988], 11.5);
 	map.createPane('labels');
 	map.getPane('labels').style.zIndex = 650;
@@ -177,9 +204,11 @@
 	map.on('click', function(e) {
 		//console.log(e.latlng)
 		selectedRoads.clear();
+		roadsNamesSet.clear();
 		roadLengths = {};
-		document.querySelector("#sideText").textContent = " ";
+		document.querySelector("#streetText").innerHTML = "";
 		for(var i = 0; i < features.length; i++) {
+			console.log(features.length)
 			var coords = features[i].geometry.coordinates
 			for(var j = 0; j < coords.length; j++) {
 				var lat  = Math.abs(coords[j][1]);
@@ -188,17 +217,41 @@
 					var roadLength = features[i].properties.length;
 					var roadCoord = features[i].geometry.coordinates[0];
 					var name = features[i].properties.name;
+					var id = features[i].id;
 					if(typeof(name) != "string") {
-						roadLengths[name[0]] = roadLength;
-						roadCoords[name[0]] = roadCoord;
-						for(var k = 0; k < name.length; k++) {
-							selectedRoads.add(name[k]);
-						}
-					} else {
-						selectedRoads.add(name);
-						roadLengths[name] = roadLength;
-						roadCoords[name] = roadCoord;
+						var geocoder = new google.maps.Geocoder;
+						name = geocodeLatLng(geocoder, roadCoord);
+
 					}
+					if(!selectedRoads.has(id) && !roadsNamesSet.has(name)) {
+						selectedRoads.add(id)
+						roadsNamesSet.add(name);
+						roadLengths[id] = roadLength;
+						roadCoords[id] = roadCoord;
+						roadNames[id] = name;
+						value = id;
+						document.querySelector("#streetText").innerHTML += "<p><span class=\"button\" id=\"" +id + "\">" + roadNames[value] + "</span><br>" + roadLengths[value] + "<br>" + roadCoords[value] +"<br><br></p>";
+					}
+
+
+					// if(typeof(name) == "object") {
+					// 	if(name != null) {
+					// 		roadLengths[name[0]] = roadLength;
+					// 		roadCoords[name[0]] = roadCoord;
+					// 		for(var k = 0; k < name.length; k++) {
+					// 			selectedRoads.add(name[k]);
+					// 		}
+					// 	} else {
+					// 		console.log(features[i])
+					// 	}
+					// } else if(typeof(name) == "string") {
+					// 	selectedRoads.add(name);
+					// 	roadLengths[name] = roadLength;
+					// 	roadCoords[name] = roadCoord;
+					// }
+
+
+
 					//selectedRoads.add(name);
 				}
 			}
@@ -208,7 +261,7 @@
 		}
 
 		selectedRoads.forEach(function(value, key, setObj) {
-			document.querySelector("#sideText").innerHTML += "<p><span class=\"button\">" + value + "</span><br>" + roadLengths[value] + "<br>" + roadCoords[value] +"<br><br></p>";
+
 
 			//document.querySelector("#sideInfo").innerHTML = '<iframe src="https://maps.googleapis.com/maps/api/streetview?size=600x300&location=46.414382,10.013988&heading=151.78&pitch=-0.76&key=AIzaSyD65f4ivv0_b8Rhq7GMN-oaFx12MtpN1No"></iframe>'
 
@@ -217,8 +270,10 @@
 		var btns = document.querySelectorAll(".button")
 		for(var b = 0; b < btns.length; b++) {
 			btns[b].addEventListener("click", function() {
-				panView(roadCoords[this.textContent][1], roadCoords[this.textContent][0])
-				console.log(roadCoords[this.textContent])
+				console.log(roadCoords[this.id])
+
+				panView(roadCoords[this.id][1], roadCoords[this.id][0])
+				// console.log(roadCoords[this.textContent])
 			})
 		}
 
