@@ -14,13 +14,29 @@
 <!--  <script src="http://rawgit.com/davidjabernathy/g5223project/master/filteredEdges/filteredEdges.js"></script>-->
 <script src="http://rawgit.com/davidjabernathy/g5223project/master/filteredEdges/filteredEdges.js"></script>
 
-<script src="/Users/djabernathy/Documents/project/g5223project/filteredEdges/columbusFilteredSlow.js"></script>
-<script src="/Users/djabernathy/Documents/project/g5223project/filteredEdges/columbusFilteredModerate.js"></script>
-<script src="/Users/djabernathy/Documents/project/g5223project/filteredEdges/columbusFilteredFast.js"></script>
+<script src="/Users/djabernathy/Documents/project/g5223project/filteredEdges/Columbus/columbusFilteredSlow.js"></script>
+<script src="/Users/djabernathy/Documents/project/g5223project/filteredEdges/Columbus/columbusFilteredModerate.js"></script>
+<script src="/Users/djabernathy/Documents/project/g5223project/filteredEdges/Columbus/columbusFilteredFast.js"></script>
 
-<script src="/Users/djabernathy/Documents/project/g5223project/filteredEdges/clevelandFilteredSlow.js"></script>
-<script src="/Users/djabernathy/Documents/project/g5223project/filteredEdges/clevelandFilteredModerate.js"></script>
-<script src="/Users/djabernathy/Documents/project/g5223project/filteredEdges/clevelandFilteredFast.js"></script>
+<script src="/Users/djabernathy/Documents/project/g5223project/filteredEdges/Cleveland/clevelandFilteredSlow.js"></script>
+<script src="/Users/djabernathy/Documents/project/g5223project/filteredEdges/Cleveland/clevelandFilteredModerate.js"></script>
+<script src="/Users/djabernathy/Documents/project/g5223project/filteredEdges/Cleveland/clevelandFilteredFast.js"></script>
+
+<script src="/Users/djabernathy/Documents/project/g5223project/filteredEdges/Atlanta/AtlantaFilteredSlow.js"></script>
+<script src="/Users/djabernathy/Documents/project/g5223project/filteredEdges/Atlanta/AtlantaFilteredModerate.js"></script>
+<script src="/Users/djabernathy/Documents/project/g5223project/filteredEdges/Atlanta/AtlantaFilteredFast.js"></script>
+
+<script src="/Users/djabernathy/Documents/project/g5223project/filteredEdges/Chicago/ChicagoFilteredSlow.js"></script>
+<script src="/Users/djabernathy/Documents/project/g5223project/filteredEdges/Chicago/ChicagoFilteredModerate.js"></script>
+<script src="/Users/djabernathy/Documents/project/g5223project/filteredEdges/Chicago/ChicagoFilteredFast.js"></script>
+
+<script src="/Users/djabernathy/Documents/project/g5223project/filteredEdges/Detroit/DetroitFilteredSlow.js"></script>
+<script src="/Users/djabernathy/Documents/project/g5223project/filteredEdges/Detroit/DetroitFilteredModerate.js"></script>
+<script src="/Users/djabernathy/Documents/project/g5223project/filteredEdges/Detroit/DetroitFilteredFast.js"></script>
+
+<script src="/Users/djabernathy/Documents/project/g5223project/filteredEdges/Milwaukee/MilwaukeeFilteredSlow.js"></script>
+<script src="/Users/djabernathy/Documents/project/g5223project/filteredEdges/Milwaukee/MilwaukeeFilteredModerate.js"></script>
+<script src="/Users/djabernathy/Documents/project/g5223project/filteredEdges/Milwaukee/MilwaukeeFilteredFast.js"></script>
 
 <!--<script src="https://rawgit.com/davidjabernathy/g5223project/master/data.js" type="text/javascript"></script>-->
 
@@ -93,6 +109,23 @@
 		h2 {
 			text-align: center;
 		}
+
+		.select-style {
+		    border: 1px solid #ccc;
+		    border-radius: 3px;
+		    overflow: hidden;
+				width: 30%
+		}
+
+		.select-style select {
+		    padding: 5px 8px;
+		    border: none;
+				width: 30%
+		    box-shadow: none;
+		}
+
+
+
 	</style>
 
 
@@ -101,11 +134,15 @@
 <div id="page">
 <div class="sideInfo">
 	<div id="sideText"><p>
-		<select id="city">
+		<select class="select-style" id="city">
+			<option value="atlanta">Atlanta</option>
+			<option value="chicago">Chicago</option>
 		  <option value="cleveland">Cleveland</option>
 		  <option value="columbus">Columbus</option>
+			<option value="detroit">Detroit</option>
+			<option value="milwaukee">Milwaukee</option>
 		</select>
-		<select id="speed">
+		<select class="select-style" id="speed">
 		  <option value="Slow">slow</option>
 		  <option value="Moderate">moderate</option>
 		  <option value="Fast">fast</option>
@@ -124,7 +161,14 @@
 </script>
 <script>
 
-
+	var cityCoords = {
+		columbus: [39.9612, -82.9988],
+		cleveland: [41.4993, -81.6944],
+		atlanta: [33.7490, -84.3880],
+		chicago: [41.8781, -87.6298],
+		detroit: [42.3314, -83.0458],
+		milwaukee: [43.0389, -87.9065]
+	}
 	filteredEdges = columbusFilteredModerate;
 
 	var selectionChanged = function() {
@@ -141,7 +185,7 @@
 	citySelect.value = "columbus";
 
 	citySelect.addEventListener("change", function () {
-		map.setView([41.4993, -81.6944])
+		map.setView(cityCoords[citySelect.value])
 		selectionChanged();
 	})
 
