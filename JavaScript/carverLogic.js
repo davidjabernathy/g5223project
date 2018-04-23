@@ -118,7 +118,7 @@
 		maxZoom: 15,
 	}).addTo(map);
 
-	var labelLink = 'https://api.mapbox.com/styles/v1/djabernathy/cjfg3ah4jc5ej2rpaby3hlah1/tiles/256/{z}/{x}/{y}@2x?access_token=pk.eyJ1IjoiZGphYmVybmF0aHkiLCJhIjoiY2pmZzE2NGw2MjJkdjMzbWkxMnRqMnh5NCJ9.MuXblUUZsFV0ibyEQz2AJw';
+	var labelLink = 'https://api.mapbox.com/styles/v1/amasw87/cjgcjnead0wog2rmwpbai4hjk/tiles/256/{z}/{x}/{y}@2x?access_token=pk.eyJ1IjoiYW1hc3c4NyIsImEiOiJjajZ6aG50bnUwMGpqMnBvOGJjNTk0cHFvIn0.IXHyLgImAw0H_dlCs7ZEgA';
 	L.tileLayer(labelLink, {
 			maxZoom: 13,
 			pane: 'labels'
