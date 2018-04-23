@@ -1,0 +1,70 @@
+html, body {
+  height: 100%;
+  margin: 0;
+}
+#map {
+  height: 100%;
+  width: 100%;
+  position: left;
+  left: 0%;
+  top: 0;
+  position: fixed; /* Fixed Sidebar (stay in place on scroll) */
+}
+/* The sidebar menu */
+.sideInfo {
+    height: 80%; /* Full-height: remove this if you want "auto" height */
+    width: 20%; /* Set the width of the sidebar */
+    position: fixed; /* Fixed Sidebar (stay in place on scroll) */
+    z-index: 1; /* Stay on top */
+    top: 10%; /* Stay at the top */
+    left: 1%;
+    background-color: lightgrey; /* Black */
+    overflow-x: hidden; /* Disable horizontal scroll */
+    border-radius: 15px;
+    position: fixed;
+}
+#sideText {
+    height: 50%; /* Full-height: remove this if you want "auto" height */
+    width: 20%; /* Set the width of the sidebar */
+    position: fixed; /* Fixed Sidebar (stay in place on scroll) */
+    z-index: 1; /* Stay on top */
+    left: 1%;
+    background-color: lightgrey; /* Black */
+    overflow-x: hidden; /* Disable horizontal scroll */
+
+}
+#page {
+  height: 100%;
+  width: 100%
+}
+#street-view {
+  height: 40%;
+  top: 60%;
+  position: fixed;
+  background-color: lightgrey;
+}
+.button {
+  text-align: center;
+  cursor: pointer;
+}
+p {
+  text-align: center;
+}
+
+h2 {
+  text-align: center;
+}
+
+.select-style {
+    border: 1px solid #ccc;
+    border-radius: 3px;
+    overflow: hidden;
+    width: 30%
+}
+
+.select-style select {
+    padding: 5px 8px;
+    border: none;
+    width: 30%
+    box-shadow: none;
+}

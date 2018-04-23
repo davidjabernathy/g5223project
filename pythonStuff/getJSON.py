@@ -27,7 +27,7 @@ def down_slope_force(mass, elev_change, distance):
     return mass * angle * (gravity - air_friction)
 
 # download city street data.
-G = ox.graph_from_place('Indianapolis, Indiana, USA', network_type='drive')
+G = ox.graph_from_place('Milwaukee, Wisconsin, USA', network_type='drive')
 
 # add elevation data.
 G_elev = ox.add_node_elevations(G, apiKey, max_locations_per_batch=350, pause_duration=0.02)
@@ -120,14 +120,14 @@ geojsonFiltered_fast = gdfFiltered_fast.to_json()
 
 
 
-f = open('/Users/djabernathy/Documents/project/g5223project/filteredEdges/Indianapolis/IndianapolisFilteredSlow.js', 'w')
-result = 'var indianapolisFilteredSlow =' + str(geojsonFiltered_slow)
+f = open('/Users/djabernathy/Documents/project/g5223project/filteredEdges/Milwaukee/MilwaukeeFilteredSlow.js', 'w')
+result = 'var milwaukeeFilteredSlow =' + str(geojsonFiltered_slow)
 f.write(result)
 
-f = open('/Users/djabernathy/Documents/project/g5223project/filteredEdges/Indianapolis/IndianapolisFilteredModerate.js', 'w')
-result = 'var indianapolisFilteredModerate =' + str(geojsonFiltered_moderate)
+f = open('/Users/djabernathy/Documents/project/g5223project/filteredEdges/Milwaukee/MilwaukeeFilteredModerate.js', 'w')
+result = 'var milwaukeeFilteredModerate =' + str(geojsonFiltered_moderate)
 f.write(result)
 
-f = open('/Users/djabernathy/Documents/project/g5223project/filteredEdges/Indianapolis/IndianapolisFilteredFast.js', 'w')
-result = 'var indianapolisFilteredFast =' + str(geojsonFiltered_fast)
+f = open('/Users/djabernathy/Documents/project/g5223project/filteredEdges/Milwaukee/MilwaukeeFilteredFast.js', 'w')
+result = 'var milwaukeeFilteredFast =' + str(geojsonFiltered_fast)
 f.write(result)
