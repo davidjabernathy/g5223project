@@ -16,10 +16,12 @@ import json
 
 apiKey = 'AIzaSyAgGQRYnWTzsgf6Xn1DISE99Tdq7Lr9rwU'
 
+# defines the of the hill
 def angle_of_hill(elev_change, distance):
     angle = math.atan(elev_change/distance)
     return angle
 
+# defines the downard force of slopes (factoring in gravity nuy not friction)
 def down_slope_force(mass, elev_change, distance):
     gravity = 9.8
     air_friction = 0
@@ -48,12 +50,8 @@ for n in G_elev.nodes():
             # neighbors. keep track of pairs with appropriate elevation change.
             change_elev = G_elev.node[n]['elevation'] - G_elev.node[neighbor]['elevation']
 
-            # just checking for amount of change now. Later use elevation change and road distance
-            # to get possible speed
+            
             if change_elev > 5 or change_elev < -5:
-
-                # just checking for amount of change now. Later use elevation change and road distance
-                # to get possible speed
                 length = road['length']
                 skateweight = 150
                 TopHill_elevation = 552 #feet
@@ -68,19 +66,11 @@ for n in G_elev.nodes():
                     if 'geometry' in road.keys():
                         #print(road['geometry'], '\n\n\n\n')
                         print()
-    
-    
-                    # some edges don't have a geometry. How do we handle these?
-                    # do they mean they are relatively straight and don't need a more complex geometry?
-                    # do they just not have all the data?
+   
                     else:
                         #print(G_elev.get_edge_data(n, neighbor)[0])
-    
                         count += 1
-    
-    
-                    # do other types of filtering
-    
+        
                     # if all conditions are passed, add nodes to set
                     if vel < 20:    
                         filtered_nodes_slow.add(n)
@@ -100,11 +90,13 @@ for n in G_elev.nodes():
 
 print(len(filtered_nodes))
 
-
 ox.plot_graph(ox.project_graph(G_filtered_slow))
 ox.plot_graph(ox.project_graph(G_filtered_moderate))
 ox.plot_graph(ox.project_graph(G_filtered_fast))
+
 #ox.plot_graph(ox.project_graph(G))
+
+#This saves as a shapefile instead of JSON
 #ox.save_graph_shapefile(G, filename='Columbus', folder=None, encoding='utf-8')
 #ox.save_graph_shapefile(G_filtered, filename='Filtered Roads', folder=None, encoding='utf-8')
 
@@ -118,8 +110,6 @@ geojsonFiltered_moderate = gdfFiltered_moderate.to_json()
 gdfFiltered_fast = ox.graph_to_gdfs(G_filtered_fast, nodes=False, edges=True, node_geometry=True, fill_edge_geometry=True)
 geojsonFiltered_fast = gdfFiltered_fast.to_json()
 #geojsonFiltered = json.dumps(geojsonFiltered, sort_keys=True, indent=4)
-
-
 
 f = open('/Users/djabernathy/Documents/project/g5223project/filteredEdges/Milwaukee/MilwaukeeFilteredSlow.js', 'w')
 result = 'var milwaukeeFilteredSlow =' + str(geojsonFiltered_slow)
