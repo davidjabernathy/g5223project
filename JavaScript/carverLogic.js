@@ -33,7 +33,8 @@
 	citySelect.value = "columbus";
 
 	citySelect.addEventListener("change", function () {
-		map.setView(cityCoords[citySelect.value])
+		//map.setView(cityCoords[citySelect.value])
+		map.setView(filterededges.features[0].geometry.coordinates[0])
 		selectionChanged();
 	})
 
