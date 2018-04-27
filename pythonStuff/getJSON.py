@@ -50,7 +50,7 @@ for n in G_elev.nodes():
             # neighbors. keep track of pairs with appropriate elevation change.
             change_elev = G_elev.node[n]['elevation'] - G_elev.node[neighbor]['elevation']
 
-            
+            # checks for change in elevation
             if change_elev > 5 or change_elev < -5:
                 length = road['length']
                 skateweight = 150
