@@ -110,6 +110,12 @@
 		circle.setLatLng(mouse_position);
     });
 
+map.on('zoomend', function() {
+
+   console.log("whoop whoop");
+
+});
+
   var edges = L.geoJSON(filteredEdges, {style: blueStyle});
 	edges.addTo(map);
 
