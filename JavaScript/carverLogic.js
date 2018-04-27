@@ -25,6 +25,7 @@
 		filteredEdges = window[String(citySelect.value) + "Filtered" + String(speedSelect.value)];//columbusFilteredSlow;
 
 		features = filteredEdges.features;
+		map.setView([features[0].geometry.coordinates[0][1], features[0].geometry.coordinates[0][0]])
 		edges = L.geoJSON(filteredEdges, {style: blueStyle});
 		edges.addTo(map);
 	}
@@ -34,7 +35,6 @@
 
 	citySelect.addEventListener("change", function () {
 		//map.setView(cityCoords[citySelect.value])
-		map.setView([filteredEdges.features[0].geometry.coordinates[0][1], filteredEdges.features[0].geometry.coordinates[0][0]])
 		selectionChanged();
 	})
 
