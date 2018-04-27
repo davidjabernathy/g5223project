@@ -1,3 +1,4 @@
+	var circle_size = 1000;
 
 	var cityCoords = {
 		columbus: [39.9612, -82.9988],
@@ -112,7 +113,7 @@
 
 map.on('zoomend', function(e) {
 
-circle.setRadius(100);
+circle.setRadius(100 * L.getZoom());
    console.log("whoop whoop");
 
 });
