@@ -27,6 +27,7 @@ def down_slope_force(mass, elev_change, distance):
     return mass * angle * (gravity - air_friction)
 
 # download city street data.
+# to change the city the data comes from type the 'city, state, country' in that format. 
 G = ox.graph_from_place('Milwaukee, Wisconsin, USA', network_type='drive')
 
 # add elevation data.
