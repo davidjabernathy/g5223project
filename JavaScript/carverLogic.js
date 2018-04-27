@@ -112,6 +112,7 @@
 
 map.on('zoomend', function(e) {
 
+circle.setRadius(100);
    console.log("whoop whoop");
 
 });
