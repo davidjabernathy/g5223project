@@ -110,7 +110,7 @@
 		circle.setLatLng(mouse_position);
     });
 
-map.on('zoomend', function() {
+map.on('zoomend', function(e) {
 
    console.log("whoop whoop");
 
