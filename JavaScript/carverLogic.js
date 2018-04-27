@@ -112,8 +112,8 @@
     });
 
 map.on('zoomend', function(e) {
-
-circle.setRadius(100 * L.getZoom());
+console.log(map.getZoom());
+circle.setRadius(100 * map.getZoom());
    console.log("whoop whoop");
 
 });
