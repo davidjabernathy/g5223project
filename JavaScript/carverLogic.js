@@ -34,7 +34,7 @@
 
 	citySelect.addEventListener("change", function () {
 		//map.setView(cityCoords[citySelect.value])
-		map.setView(filteredEdges.features[0].geometry.coordinates[0])
+		map.setView([filteredEdges.features[0].geometry.coordinates[0][1], filteredEdges.features[0].geometry.coordinates[0][0]])
 		selectionChanged();
 	})
 
