@@ -1,4 +1,13 @@
-	var circle_size = 1000;
+	var circle_size = 20;
+
+	var mouse_position = { lat: 40.1, lng: 40.1 };
+
+	var features = filteredEdges.features;
+	var selectedRoads = new Set();
+	var roadLengths = {};
+	var roadCoords = {};
+	var roadNames = {}
+	var roadsNamesSet = new Set();
 
 	var cityCoords = {
 		columbus: [39.9612, -82.9988],
@@ -35,23 +44,14 @@
 		selectionChanged();
 	});
 
-	function calcHypotenuse(a, b) {
-	  return(Math.sqrt((a * a) + (b * b)));
+	function getMeterPerPixel() {
+		var y = map.getSize().y;
+		var x = map.getSize().x;
+
+		var maxMeters = map.containerPointToLatLng([0,y]).distanceTo(map.containerPointToLatLng([x,y]));
+		var MeterPerPixel = maxMeters/x;
+		return MeterPerPixel;
 	}
-
-	function distance_formula(){
-
-	}
-
-	var mouse_position = { lat: 40.1, lng: 40.1 };
-
-	var features = filteredEdges.features;
-	var selectedRoads = new Set();
-	var roadLengths = {};
-	var roadCoords = {};
-	var roadNames = {}
-	var roadsNamesSet = new Set();
-
 
 	var panView = function (lat, lng) {
 	panorama = new google.maps.StreetViewPanorama(
@@ -111,12 +111,9 @@
 		circle.setLatLng(mouse_position);
     });
 
-map.on('zoomend', function(e) {
-console.log(map.getZoom());
-circle.setRadius(100 * map.getZoom());
-   console.log("whoop whoop");
-
-});
+  map.on('zoomend', function(e) {
+  circle.setRadius(circle_size * self.getMeterPerPixel());
+  });
 
   var edges = L.geoJSON(filteredEdges, {style: blueStyle});
 	edges.addTo(map);
@@ -136,7 +133,7 @@ circle.setRadius(100 * map.getZoom());
 				opacity: 0,
 				fillColor: '#0066ff',
 				fillOpacity: 0.4,
-				radius: 1000.0
+				radius: circle_size * self.getMeterPerPixel()
 		});
 		circle.addTo(map);
 
